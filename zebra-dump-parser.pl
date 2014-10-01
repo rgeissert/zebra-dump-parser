@@ -15,10 +15,18 @@ use warnings;
 use strict;
 require 5.008;
 
+use Getopt::Long;
+
 # only meaningful for message types TABLE_DUMP and TABLE_DUMP_V2
 # 1: verbose dump  2: AS path  3: origin AS
-my $format = 3;
-my $ignore_v6_routes = 1;
+my $format = 0;
+my $ignore_v6_routes = undef;
+
+GetOptions('format=i' => \$format,
+            'ignore-v6-routes!' => \$ignore_v6_routes) or exit 1;
+
+$format = 3 if ($format < 1 || $format > 3);
+$ignore_v6_routes = 1 unless (defined($ignore_v6_routes));
 
 ##############################################################################
 use constant {
